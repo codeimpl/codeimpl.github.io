@@ -1,12 +1,24 @@
 ---
 title: "Remove static Create methods"
 date: 2020-01-19
-categories: Issue
+categories: issue
 ---
 
-# Issue number 939692
+# Title : Remove statice Create methods
+ - issue number 939691
 
+Per the blink-dev discussion (https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/iJ1bawbxbWs/vEdfT5QtBgAJ), we should remove static and trivial Create methods from the code base.
 
+###The guideline is:
+
+####**1. The auto-generated bindings consistently use Create().**
+####**2. Don't mix Create() and a public constructor in one class.**
+
+Newly added classes should follow the guideline.
+
+For existing classes, rewriting per the guideline is a huge amount of work and bring few benefits. So, we scope the work to removing "redundant" Create() helpers. "redundant" means all Create() methods of the class are just wrapping MakeGarbageCollected / std::make_unique and not needed.
+
+Note: You can use a PassKey pattern if you want to call MakeGarbageCollected() from a Create() method.
 
 ```c++
 class MyClass {
@@ -28,7 +40,7 @@ class MyClass {
 # Guide Line on Chromium 
 
 ## Don't mix Create() factory methods and public constructors in one class.
-## 하나의 클래스에서 Create() factory 함수와 public 생성자를 혼합하여 사용하지 마세요.
+ 하나의 클래스에서 Create() factory 함수와 public 생성자를 혼합하여 사용하지 마세요.
 
 A class only can have either Create() factory functions or public constructors.
 In case you want to call MakeGarbageCollected<> from a Create() method, a
