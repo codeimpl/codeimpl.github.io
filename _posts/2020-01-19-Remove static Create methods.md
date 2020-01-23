@@ -4,15 +4,14 @@ date: 2020-01-19
 categories: issue
 ---
 
-# Title : Remove statice Create methods
- - issue number 939691
+### Don't mix Create() factory methods and public constructors in one class - [939691](https://bugs.chromium.org/p/chromium/issues/detail?id=939691)
 
-Per the blink-dev discussion (https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/iJ1bawbxbWs/vEdfT5QtBgAJ), we should remove static and trivial Create methods from the code base.
+Per the [blink-dev discussion](https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/iJ1bawbxbWs/vEdfT5QtBgAJ), we should remove static and trivial Create methods from the code base.
 
-###The guideline is:
+##### The guideline is:
 
-####**1. The auto-generated bindings consistently use Create().**
-####**2. Don't mix Create() and a public constructor in one class.**
+##### **1. The auto-generated bindings consistently use Create().**
+##### **2. Don't mix Create() and a public constructor in one class.**
 
 Newly added classes should follow the guideline.
 
@@ -36,24 +35,18 @@ class MyClass {
 };
 ```
 
+---------------------
 
-# Guide Line on Chromium 
+## [Guide Line on Chromium](https://chromium.googlesource.com/chromium/src/+/master/styleguide/c++/blink-c++.md#don_t-mix-create_factory-methods-and-public-constructors-in-one-class)
 
-## Don't mix Create() factory methods and public constructors in one class.
- 하나의 클래스에서 Create() factory 함수와 public 생성자를 혼합하여 사용하지 마세요.
+##### Don't mix Create() factory methods and public constructors in one class.
+_하나의 클래스에서 Create() factory 함수와 public 생성자를 혼합하여 사용하지 마세요._
 
-A class only can have either Create() factory functions or public constructors.
-In case you want to call MakeGarbageCollected<> from a Create() method, a
-PassKey pattern can be used. Note that the auto-generated binding classes keep
-using Create() methods consistently.
-
-하나의 클래스는 오직 Create() factory 함수와 public 생성자 중 하나만 갖을 수 있다.
-만약 당신이 Create() 함수에서 MakeGarbageCollected<>를 호출 하고 싶다면,
-PassKey pattern을 사용할 수 있다.자동 생성 된 바인딩 클래스는 Create () 메소드를 
-일관되게 사용합니다.
+##### A class only can have either Create() factory functions or public constructors. In case you want to call MakeGarbageCollected<> from a Create() method, a PassKey pattern can be used. Note that the auto-generated binding classes keep using Create() methods consistently. 
+_하나의 클래스는 오직 Create() factory 함수와 public 생성자 중 하나만 갖을 수 있다. 만약 당신이 Create() 함수에서 MakeGarbageCollected<>를 호출 하고 싶다면, PassKey pattern을 사용할 수 있다.자동 생성 된 바인딩 클래스는 Create () 메소드를 일관되게 사용합니다._
 
 
-**Good:**
+**Good:** 
 ```c++
 class HistoryItem {
  public:
@@ -68,7 +61,7 @@ void DocumentLoader::SetHistoryItemStateForCommit() {
 }
 ```
 
-**Good:**
+**Good:** using [Passkey pattern](https://codeimpl.github.io/pattern/PassKey-Pattern/)
 ```c++
 class BodyStreamBuffer {
  public:
@@ -88,7 +81,7 @@ BodyStreamBuffer* BodyStreamBuffer::Create() {
 BodyStreamBuffer::BodyStreamBuffer(PassKey) {}
 ```
 
-**Bad:**
+**Bad:** Mixed static Create() and public constructor.
 ```c++
 class HistoryItem {
  public:

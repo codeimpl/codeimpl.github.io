@@ -1,10 +1,10 @@
 ---
 title: "PassKey pattern"
 date: 2020-01-21
-categories: issue
+categories: cpp
 ---
 
-# Title : What is PassKey Pattern
+### What is PassKey Pattern
 
 **PassKey Pattern**
 
